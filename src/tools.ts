@@ -112,29 +112,39 @@ export function registerTools(server: McpServer): void {
     {
       title: "Transcribe audio",
       description:
-        "Transcribe an audio file. `file` must be an absolute path readable by the HyperWhisper app.",
+        "Transcribe an audio file. `file` must be an absolute path readable by the HyperWhisper app. You must also provide EITHER `mode_id` (from `list_modes`) OR both `engine` and `model` (from `list_models`) — `file` alone is not enough.",
       inputSchema: {
         file: z.string().describe("Absolute path to an audio file."),
+        mode_id: z
+          .string()
+          .optional()
+          .describe(
+            "UUID of a saved mode from `list_modes`. Mutually exclusive with engine/model.",
+          ),
         engine: z
           .string()
           .optional()
-          .describe("Optional engine override, e.g. `whisperLocal`, `openai`."),
+          .describe(
+            "Engine, e.g. `whisperLocal`, `openai`, `groq`. Required if `mode_id` is not set.",
+          ),
         model: z
           .string()
           .optional()
-          .describe("Optional model override, e.g. `large-v3`."),
+          .describe(
+            "Model id, e.g. `tiny.en`, `large-v3`. Required if `mode_id` is not set.",
+          ),
         language: z
           .string()
           .optional()
           .describe("BCP-47 language tag or `auto` (default)."),
       },
     },
-    async ({ file, engine, model, language }) =>
+    async ({ file, mode_id, engine, model, language }) =>
       safeCall(() =>
         callApi({
           method: "POST",
           path: "/transcribe",
-          body: { file, engine, model, language },
+          body: { file, mode_id, engine, model, language },
         }),
       ),
   );

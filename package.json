@@ -1,6 +1,6 @@
 {
   "name": "@hyperwhisper/mcp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Model Context Protocol server that wraps the HyperWhisper local HTTP API",
   "type": "module",
   "main": "dist/index.js",

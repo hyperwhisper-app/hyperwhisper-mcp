@@ -6,7 +6,7 @@ import { registerTools } from "./tools.js";
 async function main() {
   const server = new McpServer({
     name: "hyperwhisper",
-    version: "0.1.0",
+    version: "0.1.1",
   });
   registerTools(server);
   await server.connect(new StdioServerTransport());
